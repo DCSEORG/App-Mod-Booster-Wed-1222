@@ -29,10 +29,21 @@ document.addEventListener('DOMContentLoaded', function() {
             const requiredFields = form.querySelectorAll('[required]');
             let isValid = true;
             
+            // Clear previous error messages
+            form.querySelectorAll('.validation-error').forEach(el => el.remove());
+            
             requiredFields.forEach(field => {
                 if (!field.value.trim()) {
                     isValid = false;
                     field.style.borderColor = 'var(--danger)';
+                    
+                    // Add inline error message
+                    const errorMsg = document.createElement('div');
+                    errorMsg.className = 'validation-error text-danger';
+                    errorMsg.style.fontSize = '0.875rem';
+                    errorMsg.style.marginTop = '0.25rem';
+                    errorMsg.textContent = 'This field is required';
+                    field.parentElement.appendChild(errorMsg);
                 } else {
                     field.style.borderColor = 'var(--border)';
                 }
@@ -40,7 +51,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (!isValid) {
                 e.preventDefault();
-                alert('Please fill in all required fields');
+                // Scroll to first error
+                const firstError = form.querySelector('.validation-error');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
             }
         });
     });
@@ -55,13 +70,35 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Confirm delete actions
+    // Confirm delete actions with better UX
     const deleteForms = document.querySelectorAll('form[action*="delete"]');
     deleteForms.forEach(form => {
         form.addEventListener('submit', function(e) {
-            if (!confirm('Are you sure you want to delete this expense?')) {
-                e.preventDefault();
-            }
+            e.preventDefault();
+            
+            // Create accessible confirmation dialog
+            const confirmMsg = document.createElement('div');
+            confirmMsg.className = 'alert alert-danger';
+            confirmMsg.style.marginTop = '1rem';
+            confirmMsg.innerHTML = `
+                <strong>Confirm Deletion</strong><br>
+                Are you sure you want to delete this expense? This action cannot be undone.
+                <div style="margin-top: 1rem;">
+                    <button type="button" class="btn btn-danger" id="confirmDelete">Yes, Delete</button>
+                    <button type="button" class="btn btn-secondary" id="cancelDelete">Cancel</button>
+                </div>
+            `;
+            
+            form.insertAdjacentElement('beforebegin', confirmMsg);
+            
+            document.getElementById('confirmDelete').onclick = () => {
+                confirmMsg.remove();
+                form.submit();
+            };
+            
+            document.getElementById('cancelDelete').onclick = () => {
+                confirmMsg.remove();
+            };
         });
     });
 
