@@ -1,0 +1,91 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="dashboard-header">
+    <h1>Expense Dashboard</h1>
+    <p class="text-muted">Overview of your expense management</p>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card stat-card-primary">
+        <div class="stat-icon">📊</div>
+        <div class="stat-content">
+            <div class="stat-label">Total Expenses</div>
+            <div class="stat-value">@Model.Statistics.TotalExpenses</div>
+        </div>
+    </div>
+
+    <div class="stat-card stat-card-warning">
+        <div class="stat-icon">⏳</div>
+        <div class="stat-content">
+            <div class="stat-label">Pending Approval</div>
+            <div class="stat-value">@Model.Statistics.PendingCount</div>
+            <div class="stat-subtext">£@Model.Statistics.TotalPendingAmount.ToString("N2")</div>
+        </div>
+    </div>
+
+    <div class="stat-card stat-card-success">
+        <div class="stat-icon">✓</div>
+        <div class="stat-content">
+            <div class="stat-label">Approved</div>
+            <div class="stat-value">@Model.Statistics.ApprovedCount</div>
+            <div class="stat-subtext">£@Model.Statistics.TotalApprovedAmount.ToString("N2")</div>
+        </div>
+    </div>
+
+    <div class="stat-card stat-card-danger">
+        <div class="stat-icon">✗</div>
+        <div class="stat-content">
+            <div class="stat-label">Rejected</div>
+            <div class="stat-value">@Model.Statistics.RejectedCount</div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header">
+        <h2>Recent Expenses</h2>
+        <a href="/Expenses" class="btn btn-sm btn-outline-primary">View All</a>
+    </div>
+    <div class="card-body">
+        @if (Model.RecentExpenses.Any())
+        {
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Submitted By</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var expense in Model.RecentExpenses)
+                        {
+                            <tr>
+                                <td>@expense.ExpenseDate.ToString("dd MMM yyyy")</td>
+                                <td><span class="badge badge-category">@expense.CategoryName</span></td>
+                                <td>@(expense.Description ?? "-")</td>
+                                <td class="amount">£@expense.AmountGBP.ToString("N2")</td>
+                                <td><span class="badge badge-@expense.StatusName.ToLower()">@expense.StatusName</span></td>
+                                <td>@expense.UserName</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <p>No expenses found</p>
+            </div>
+        }
+    </div>
+</div>

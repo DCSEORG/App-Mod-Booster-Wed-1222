@@ -1,0 +1,80 @@
+@page
+@model ExpensesModel
+@{
+    ViewData["Title"] = "Expenses";
+}
+
+<div class="page-header">
+    <div>
+        <h1>All Expenses</h1>
+        <p class="text-muted">View and manage all expense submissions</p>
+    </div>
+    <div>
+        <a href="/NewExpense" class="btn btn-primary">+ New Expense</a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h2>Filter Expenses</h2>
+    </div>
+    <div class="card-body">
+        <form method="get" class="filter-form">
+            <div class="form-group">
+                <label>Status</label>
+                <select name="StatusFilter" class="form-control" onchange="this.form.submit()">
+                    <option value="">All Statuses</option>
+                    <option value="Draft" selected="@(Model.StatusFilter == "Draft")">Draft</option>
+                    <option value="Submitted" selected="@(Model.StatusFilter == "Submitted")">Submitted</option>
+                    <option value="Approved" selected="@(Model.StatusFilter == "Approved")">Approved</option>
+                    <option value="Rejected" selected="@(Model.StatusFilter == "Rejected")">Rejected</option>
+                </select>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card mt-3">
+    <div class="card-body">
+        @if (Model.Expenses.Any())
+        {
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Date</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>User</th>
+                            <th>Submitted</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var expense in Model.Expenses)
+                        {
+                            <tr>
+                                <td>#@expense.ExpenseId</td>
+                                <td>@expense.ExpenseDate.ToString("dd MMM yyyy")</td>
+                                <td><span class="badge badge-category">@expense.CategoryName</span></td>
+                                <td>@(expense.Description ?? "-")</td>
+                                <td class="amount">£@expense.AmountGBP.ToString("N2")</td>
+                                <td><span class="badge badge-@expense.StatusName.ToLower()">@expense.StatusName</span></td>
+                                <td>@expense.UserName</td>
+                                <td>@(expense.SubmittedAt?.ToString("dd MMM yyyy") ?? "-")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <p>No expenses found</p>
+            </div>
+        }
+    </div>
+</div>

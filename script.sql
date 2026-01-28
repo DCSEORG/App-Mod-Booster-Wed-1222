@@ -1,0 +1,12 @@
+-- Script to create managed identity user in database
+-- MANAGED-IDENTITY will be replaced by deployment script
+
+IF EXISTS (SELECT * FROM sys.database_principals WHERE name = 'MANAGED-IDENTITY')
+BEGIN
+    DROP USER [MANAGED-IDENTITY];
+END
+
+CREATE USER [MANAGED-IDENTITY] FROM EXTERNAL PROVIDER;
+ALTER ROLE db_datareader ADD MEMBER [MANAGED-IDENTITY];
+ALTER ROLE db_datawriter ADD MEMBER [MANAGED-IDENTITY];
+GRANT EXECUTE TO [MANAGED-IDENTITY];
