@@ -2546,7 +2546,7 @@
     ]
   },
   "packageFolders": {
-    "/home/runner/.nuget/packages/": {}
+    "/home/runner/work/App-Mod-Booster-Wed-1222/.codeql-scratch/dbs/csharp/working/packages": {}
   },
   "project": {
     "version": "1.0.0",
@@ -2554,7 +2554,7 @@
       "projectUniqueName": "/home/runner/work/App-Mod-Booster-Wed-1222/App-Mod-Booster-Wed-1222/src/ExpenseManagementApp/ExpenseManagementApp.csproj",
       "projectName": "ExpenseManagementApp",
       "projectPath": "/home/runner/work/App-Mod-Booster-Wed-1222/App-Mod-Booster-Wed-1222/src/ExpenseManagementApp/ExpenseManagementApp.csproj",
-      "packagesPath": "/home/runner/.nuget/packages/",
+      "packagesPath": "/home/runner/work/App-Mod-Booster-Wed-1222/.codeql-scratch/dbs/csharp/working/packages",
       "outputPath": "/home/runner/work/App-Mod-Booster-Wed-1222/App-Mod-Booster-Wed-1222/src/ExpenseManagementApp/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
@@ -2616,6 +2616,20 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[8.0.23, 8.0.23]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.linux-x64",
+            "version": "[8.0.23, 8.0.23]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[8.0.23, 8.0.23]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
