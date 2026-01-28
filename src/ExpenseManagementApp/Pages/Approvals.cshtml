@@ -1,0 +1,71 @@
+@page
+@model ApprovalsModel
+@{
+    ViewData["Title"] = "Approvals";
+}
+
+<div class="page-header">
+    <div>
+        <h1>Pending Approvals</h1>
+        <p class="text-muted">Review and approve expense submissions</p>
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.Message))
+{
+    <div class="alert alert-info">@Model.Message</div>
+}
+
+<div class="card">
+    <div class="card-body">
+        @if (Model.PendingExpenses.Any())
+        {
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Date</th>
+                            <th>User</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Amount</th>
+                            <th>Submitted</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var expense in Model.PendingExpenses)
+                        {
+                            <tr>
+                                <td>#@expense.ExpenseId</td>
+                                <td>@expense.ExpenseDate.ToString("dd MMM yyyy")</td>
+                                <td>
+                                    <div>@expense.UserName</div>
+                                    <small class="text-muted">@expense.Email</small>
+                                </td>
+                                <td><span class="badge badge-category">@expense.CategoryName</span></td>
+                                <td>@(expense.Description ?? "-")</td>
+                                <td class="amount">£@expense.AmountGBP.ToString("N2")</td>
+                                <td>@(expense.SubmittedAt?.ToString("dd MMM yyyy HH:mm") ?? "-")</td>
+                                <td>
+                                    <form method="post" style="display: inline;">
+                                        <input type="hidden" name="expenseId" value="@expense.ExpenseId" />
+                                        <button type="submit" asp-page-handler="Approve" class="btn btn-sm btn-success">✓ Approve</button>
+                                        <button type="submit" asp-page-handler="Reject" class="btn btn-sm btn-danger">✗ Reject</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <p>No pending approvals</p>
+            </div>
+        }
+    </div>
+</div>
