@@ -12,6 +12,7 @@ builder.Services.AddSingleton<DatabaseService>();
 builder.Services.AddScoped<IExpenseService, ExpenseService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IChatService, ChatService>();
 
 // Add Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
